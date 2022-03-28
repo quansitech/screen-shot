@@ -6,8 +6,7 @@ networks:
 
 services:
   screen-shot:
-      build:
-        context: .
+      image: registry.cn-shenzhen.aliyuncs.com/t4tstudio/screen-shot:latest
       container_name: screen-shot
       environment:
         - ALIOSS_REGION=
