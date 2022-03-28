@@ -43,4 +43,13 @@ curl --request POST 'http://screen-shot:3000' \
 --data-urlencode 'height=1358'
 ```
 
+请求参数说明
+
+| 参数                | 类型     | 必填  | 说明                                                   |
+| ----------------- | ------ | --- | ---------------------------------------------------- |
+| url               | string | 是   | 需要截图的url                                             |
+| width             | int    | 是   | 图片宽度                                                 |
+| height            | int    | 是   | 图片高度                                                 |
+| alioss_object_key | string | 否   | alioss的object地址，不填则会根据请求的参数计算唯一hash，将hash值作为object地址 |
+
 
