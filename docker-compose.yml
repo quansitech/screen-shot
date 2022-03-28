@@ -1,0 +1,18 @@
+version: '3.5'
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  screen-shot:
+      build:
+        context: .
+      container_name: screen-shot
+      environment:
+        - ALIOSS_REGION=
+        - ALIOSS_ACCESS_KEY_ID=
+        - ALIOSS_ACCESS_KEY_SECRET=
+        - ALIOSS_BUCKET=
+      networks:
+        - backend
