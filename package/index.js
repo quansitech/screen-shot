@@ -32,7 +32,7 @@ app.post('/', async function (req, res) {
             accessKeyId: process.env.ALIOSS_ACCESS_KEY_ID,
             accessKeySecret: process.env.ALIOSS_ACCESS_KEY_SECRET,
             bucket: process.env.ALIOSS_BUCKET,
-            secure: process.env.SECURE
+            secure: process.env.ALIOSS_SECURE
          });
         ossRes = await store.put(alioss_object_key, imgBuffer);
         await browser.close();
