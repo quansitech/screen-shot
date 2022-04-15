@@ -26,6 +26,7 @@ app.post('/', async function (req, res) {
             height: parseInt(height)
         });
         await page.goto(url);
+        await page.waitForTimeout(3000);
         const imgBuffer = await page.screenshot({fullPage: true });
         const store = new OSS({
             region: process.env.ALIOSS_REGION,

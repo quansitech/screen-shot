@@ -56,5 +56,6 @@ curl --request POST 'http://screen-shot:3000' \
 | width             | int    | 是   | 图片宽度                                                 |
 | height            | int    | 是   | 图片高度                                                 |
 | alioss_object_key | string | 否   | alioss的object地址，不填则会根据请求的参数计算唯一hash，将hash值作为object地址 |
+| waitForTimeout    | int    | 否   | 等待N毫秒后再截图                                         |
 
 
