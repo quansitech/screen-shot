@@ -6,12 +6,15 @@ networks:
 
 services:
   screen-shot:
-      image: registry.cn-shenzhen.aliyuncs.com/t4tstudio/screen-shot:latest
+      build: 
+        context: .
+        dockerfile: Dockerfile
       container_name: screen-shot
       environment:
         - ALIOSS_REGION=
         - ALIOSS_ACCESS_KEY_ID=
         - ALIOSS_ACCESS_KEY_SECRET=
         - ALIOSS_BUCKET=
+        - ALIOSS_SECURE=
       networks:
         - backend

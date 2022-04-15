@@ -23,9 +23,14 @@ ALIOSS_REGION=
 ALIOSS_ACCESS_KEY_ID=
 ALIOSS_ACCESS_KEY_SECRET=
 ALIOSS_BUCKET=
+ALIOSS_SECURE=
 ```
 
-参考alioss配置 [链接](https://github.com/ali-sdk/ali-oss#node-usage)
+ALIOSS_SECURE设置true返回https, false返回http
+
+其余配置参考alioss配置 [链接](https://github.com/ali-sdk/ali-oss#node-usage)
+
+
 
 
 
