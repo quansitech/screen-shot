@@ -9,24 +9,26 @@ app.use(express.urlencoded({ extended: true }))
 
 app.post('/', async function (req, res) {
 
-    let { url, width, height, alioss_object_key } = req.body;
+    let { url, width, height, alioss_object_key, waitForTimeout } = req.body;
 
     if(!alioss_object_key){
         alioss_object_key = `screen-shot/${md5(JSON.stringify(req.body))}.png`;
     }
 
     let ossRes;
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
     try{
-        const browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
         const page = await browser.newPage();
         page.setViewport({
             width: parseInt(width),
             height: parseInt(height)
         });
         await page.goto(url);
-        await page.waitForTimeout(3000);
+        if(!!waitForTimeout){
+            await page.waitForTimeout(waitForTimeout);
+        }
         const imgBuffer = await page.screenshot({fullPage: true });
         const store = new OSS({
             region: process.env.ALIOSS_REGION,
@@ -39,6 +41,7 @@ app.post('/', async function (req, res) {
         await browser.close();
     }
     catch(e){
+        await browser.close();
         console.log(e);
         res.send({
             code: -1,
