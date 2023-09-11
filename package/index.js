@@ -2,7 +2,7 @@ const express = require('express')
 const puppeteer = require('puppeteer')
 const OSS = require('ali-oss');
 const md5 = require('js-md5');
-const TosClient = require('@volcengine/tos-sdk');
+const { TosClient, TosClientError, TosServerError } = require('@volcengine/tos-sdk');
 
 const UploadStream = {
     'oss': async function(key,file){
@@ -23,11 +23,11 @@ const UploadStream = {
             region: process.env.TOS_REGION,
             accessKeyId: process.env.TOS_ACCESS_KEY_ID,
             accessKeySecret: process.env.TOS_ACCESS_KEY_SECRET,
-            bucket: process.env.TOS_BUCKET,
             endpoint: process.env.TOS_ENDPOINT,
         })
         res = await store.putObject({
             key: key,
+            bucket: process.env.TOS_BUCKET,
             body: file,
         });
         return res;
