@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer')
 const OSS = require('ali-oss');
 const md5 = require('js-md5');
 const { TosClient, TosClientError, TosServerError } = require('@volcengine/tos-sdk');
-
+const protocol = process.env.PROTOCOL || 'https';
 const UploadStream = {
     'oss': async function(key,file){
         let res;
@@ -18,19 +18,31 @@ const UploadStream = {
          return res;
     },
     'tos':async function(key,file){
-        let res;
         const store = new TosClient({
             region: process.env.TOS_REGION,
             accessKeyId: process.env.TOS_ACCESS_KEY_ID,
             accessKeySecret: process.env.TOS_ACCESS_KEY_SECRET,
             endpoint: process.env.TOS_ENDPOINT,
         })
-        res = await store.putObject({
-            key: key,
-            bucket: process.env.TOS_BUCKET,
-            body: file,
-        });
-        return res;
+        try {
+            const response = await store.putObject({
+                key: key,
+                bucket: process.env.TOS_BUCKET,
+                body: file,
+            });
+            
+            if (response.statusCode === 200) {
+                const url = `${protocol}://${process.env.TOS_BUCKET}.${process.env.TOS_ENDPOINT}/${key}`
+                return {
+                    name: key,
+                    url: url
+                };
+            } else {
+                throw new Error('TOS上传失败');
+            }
+        } catch (error) {
+            throw error; 
+        }
     }
 }
 
