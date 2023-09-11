@@ -2,17 +2,52 @@ const express = require('express')
 const puppeteer = require('puppeteer')
 const OSS = require('ali-oss');
 const md5 = require('js-md5');
+const TosClient = require('@volcengine/tos-sdk');
 
+const UploadStream = {
+    'oss': async function(key,file){
+        let res;
+        const store = new OSS({
+            region: process.env.ALIOSS_REGION,
+            accessKeyId: process.env.ALIOSS_ACCESS_KEY_ID,
+            accessKeySecret: process.env.ALIOSS_ACCESS_KEY_SECRET,
+            bucket: process.env.ALIOSS_BUCKET,
+            secure: process.env.ALIOSS_SECURE
+         });
+         res = await store.put(key, file);
+         return res;
+    },
+    'tos':async function(key,file){
+        let res;
+        const store = new TosClient({
+            region: process.env.TOS_REGION,
+            accessKeyId: process.env.TOS_ACCESS_KEY_ID,
+            accessKeySecret: process.env.TOS_ACCESS_KEY_SECRET,
+            bucket: process.env.TOS_BUCKET,
+            endpoint: process.env.TOS_ENDPOINT,
+        })
+        res = await store.putObject({
+            key: key,
+            body: file,
+        });
+        return res;
+    }
+}
+
+
+const UploadMethod = function(type,key,file){
+    return UploadStream[type](key,file);
+}
 const app = express()
 
 app.use(express.urlencoded({ extended: true }))
 
 app.post('/', async function (req, res) {
 
-    let { url, width, height, alioss_object_key, waitForTimeout } = req.body;
+    let { url, width, height, object_key, waitForTimeout } = req.body;
 
-    if(!alioss_object_key){
-        alioss_object_key = `screen-shot/${md5(JSON.stringify(req.body))}.png`;
+    if(!object_key){
+        object_key = `screen-shot/${md5(JSON.stringify(req.body))}.png`;
     }
 
     let ossRes;
@@ -30,14 +65,7 @@ app.post('/', async function (req, res) {
             await page.waitForTimeout(waitForTimeout);
         }
         const imgBuffer = await page.screenshot({fullPage: true });
-        const store = new OSS({
-            region: process.env.ALIOSS_REGION,
-            accessKeyId: process.env.ALIOSS_ACCESS_KEY_ID,
-            accessKeySecret: process.env.ALIOSS_ACCESS_KEY_SECRET,
-            bucket: process.env.ALIOSS_BUCKET,
-            secure: process.env.ALIOSS_SECURE
-         });
-        ossRes = await store.put(alioss_object_key, imgBuffer);
+        ossRes = await UploadMethod(process.env.UPLOAD_TYPE, object_key, imgBuffer);
         await browser.close();
     }
     catch(e){
