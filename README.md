@@ -30,8 +30,11 @@ ALIOSS_CNAME=false
 ```
 
 ALIOSS_SECURE设置true返回https, false返回http
+
 ALIOSS_ENDPOINT非必填（不填则返回链接：桶名+endpoint+文件路径）
+
 ALIOSS_CNAME设置true则ALIOSS_ENDPOINT就是自定义域名的链接(如:endpoint+文件路径)
+
 其余配置参考alioss配置 [链接](https://github.com/ali-sdk/ali-oss#node-usage)
 
 docker-compose tos环境变量设置
@@ -47,8 +50,11 @@ TOS_ENDPOINT=
 TOS_CNAME=false
 ```
 TOS_SECURE设置true返回https, false返回http
+
 TOS_ENDPOINT为必填 可参考[链接]（https://www.volcengine.com/docs/6349/107356）
-TOS_CNAME默认值为false，TOS_CNAME设置true则返回链接：endpoint+文件路径(需要在火山引擎后台配置自定义域名，可参考[链接](https://www.volcengine.com/docs/6349/128983))
+
+TOS_CNAME默认值为false，TOS_CNAME设置true则返回链接：endpoint+文件路径，需要在火山引擎后台配置自定义域名，可参考[链接](https://www.volcengine.com/docs/6349/128983)
+
 其余配置参考tos配置 [链接](https://www.volcengine.com/docs/6349/74822)
 
 
