@@ -51,7 +51,7 @@ TOS_CNAME=false
 ```
 TOS_SECURE设置true返回https, false返回http
 
-TOS_ENDPOINT为必填 可参考[链接]（https://www.volcengine.com/docs/6349/107356）
+TOS_ENDPOINT为必填 可参考[链接](https://www.volcengine.com/docs/6349/107356)
 
 TOS_CNAME默认值为false，TOS_CNAME设置true则返回链接：endpoint+文件路径，需要在火山引擎后台配置自定义域名，可参考[链接](https://www.volcengine.com/docs/6349/128983)
 
