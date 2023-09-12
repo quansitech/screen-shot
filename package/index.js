@@ -3,7 +3,8 @@ const puppeteer = require('puppeteer')
 const OSS = require('ali-oss');
 const md5 = require('js-md5');
 const { TosClient, TosClientError, TosServerError } = require('@volcengine/tos-sdk');
-const protocol = process.env.PROTOCOL || 'https';
+const secure = process.env.ALIOSS_SECURE || process.env.TOS_SECURE || false;
+const protocol = secure ? 'https' : 'http';
 const UploadStream = {
     'oss': async function(key,file){
         let res;
