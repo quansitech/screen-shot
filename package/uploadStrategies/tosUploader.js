@@ -22,7 +22,7 @@ async function uploadToTOS(key, file) {
             if(process.env.TOS_CNAME){
                 url = `${protocol}://${process.env.TOS_BUCKET}.${process.env.TOS_ENDPOINT}/${key}`;
             }else{
-                url = `${protocol}://${process.env.TOS_ENDPOINT}/${key}`;
+                url = `${protocol}://${process.env.TOS_CUS_ENDPOINT}/${key}`;
             }
             return {
                 name: key,
