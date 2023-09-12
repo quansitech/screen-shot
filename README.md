@@ -42,6 +42,9 @@ TOS_BUCKET=
 TOS_SECURE=
 TOS_ENDPOINT=
 ```
+TOS_SECURE设置true返回https, false返回http
+
+其余配置参考tos配置 [链接](https://www.volcengine.com/docs/6349/74822)
 
 
 ### 用法
