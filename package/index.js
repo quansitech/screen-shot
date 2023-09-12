@@ -1,7 +1,7 @@
 const express = require('express')
 const puppeteer = require('puppeteer')
-const OSS = require('ali-oss');
 const md5 = require('js-md5');
+const uploadStrategies = require('./uploadStrategies');
 
 const app = express()
 
@@ -9,11 +9,13 @@ app.use(express.urlencoded({ extended: true }))
 
 app.post('/', async function (req, res) {
 
-    let { url, width, height, alioss_object_key, waitForTimeout } = req.body;
+    let { url, width, height, object_key, waitForTimeout } = req.body;
 
-    if(!alioss_object_key){
-        alioss_object_key = `screen-shot/${md5(JSON.stringify(req.body))}.png`;
+    if(!object_key){
+        object_key = `screen-shot/${md5(JSON.stringify(req.body))}.png`;
     }
+
+    const uploadMethod = uploadStrategies[process.env.UPLOAD_TYPE];
 
     let ossRes;
     const browser = await puppeteer.launch({
@@ -30,14 +32,7 @@ app.post('/', async function (req, res) {
             await page.waitForTimeout(waitForTimeout);
         }
         const imgBuffer = await page.screenshot({fullPage: true });
-        const store = new OSS({
-            region: process.env.ALIOSS_REGION,
-            accessKeyId: process.env.ALIOSS_ACCESS_KEY_ID,
-            accessKeySecret: process.env.ALIOSS_ACCESS_KEY_SECRET,
-            bucket: process.env.ALIOSS_BUCKET,
-            secure: process.env.ALIOSS_SECURE
-         });
-        ossRes = await store.put(alioss_object_key, imgBuffer);
+        ossRes = await uploadMethod(object_key, imgBuffer);
         await browser.close();
     }
     catch(e){

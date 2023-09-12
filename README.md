@@ -16,9 +16,10 @@ docker-compose up -d screen-shot
 
 ### 配置
 
-docker-compose环境变量设置
+docker-compose alioss环境变量设置
 
 ```shell
+UPLOAD_TYPE=oss
 ALIOSS_REGION=
 ALIOSS_ACCESS_KEY_ID=
 ALIOSS_ACCESS_KEY_SECRET=
@@ -30,8 +31,20 @@ ALIOSS_SECURE设置true返回https, false返回http
 
 其余配置参考alioss配置 [链接](https://github.com/ali-sdk/ali-oss#node-usage)
 
+docker-compose tos环境变量设置
 
+```shell
+UPLOAD_TYPE=tos
+TOS_REGION=
+TOS_ACCESS_KEY_ID=
+TOS_ACCESS_KEY_SECRET=
+TOS_BUCKET=
+TOS_SECURE=
+TOS_ENDPOINT=
+```
+TOS_SECURE设置true返回https, false返回http
 
+其余配置参考tos配置 [链接](https://www.volcengine.com/docs/6349/74822)
 
 
 ### 用法
@@ -55,7 +68,7 @@ curl --request POST 'http://screen-shot:3000' \
 | url               | string | 是   | 需要截图的url                                             |
 | width             | int    | 是   | 图片宽度                                                 |
 | height            | int    | 是   | 图片高度                                                 |
-| alioss_object_key | string | 否   | alioss的object地址，不填则会根据请求的参数计算唯一hash，将hash值作为object地址 |
+| object_key        | string | 否   | 文件的object地址，不填则会根据请求的参数计算唯一hash，将hash值作为object地址 |
 | waitForTimeout    | int    | 否   | 等待N毫秒后再截图                                         |
 
 
