@@ -18,7 +18,12 @@ async function uploadToTOS(key, file) {
         });
 
         if (response.statusCode === 200) {
-            const url = `${protocol}://${process.env.TOS_BUCKET}.${process.env.TOS_ENDPOINT}/${key}`;
+            let url;
+            if(process.env.TOS_CNAME){
+                url = `${protocol}://${process.env.TOS_CUS_ENDPOINT}/${key}`;
+            }else{
+                url = `${protocol}://${process.env.TOS_BUCKET}.${process.env.TOS_ENDPOINT}/${key}`;
+            }
             return {
                 name: key,
                 url: url
